@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+# see kube-shell for documentation
 set -e
 
-echo $1
+kube-shell "$@"

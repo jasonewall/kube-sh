@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# Summary: Set or show the shell-specific Kubernetes context currently set.
+#
+# Usage: kube shell [<context>|--unset]
+#
+# Help: Instructs kube-sh to use a specific context for the life cycle of the current shell.
+# This context will override local directory specific .kube-context files and the
+# current-context used by default when invoking `kubectl'.
+#
+#       <context> should be one of the contexts defined in your home's .kube/config file.
+#       --unset with no other args will clear the shell based override.
+#
+# Run `kube contexts' for a list of available contexts.
+#
+
+set -e
+
+# Provide kube completions
+if [ "$1" = "--complete" ]; then
+    echo --unset
+    exec kube-contexts
+    exit
+fi
+
+context="$1"
+
+if [ -z "$context" ]; then
+    if [ -z "$KUBE_SH_CONTEXT" ]; then
+        echo "kube: no shell-specific context configured" >&2
+        exit 1
+    else
+        echo "echo \"\$KUBE_SH_CONTEXT\""
+        exit
+    fi
+fi
+
+if [ "$context" = "--unset" ]; then
+    echo "unset KUBE_SH_CONTEXT"
+    exit
+fi
+
+# Make sure the context exists
+if kube-contexts $context >/dev/null; then
+    echo "export KUBE_SH_CONTEXT=\"${context}\""
+else
+    echo "return 1"
+    exit 1
+fi

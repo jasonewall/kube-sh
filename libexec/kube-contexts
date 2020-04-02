@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -e
+
+kubectl config get-contexts --no-headers -o name "$@"

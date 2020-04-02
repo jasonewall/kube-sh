@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Provide kube completions
+if [ "$1" = "--complete" ]; then
+    echo "fuck"
+    echo "hell"
+    exit
+fi
+
