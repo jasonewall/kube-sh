@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Summary: Detect the file that sets the current kubectl context
+set -e
+
+echo "current-context in $(kube-config-file)"

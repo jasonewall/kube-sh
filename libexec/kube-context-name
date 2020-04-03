@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Summary: Show the currently active kubectl context
+set -e
+
+[ -n "$KUBE_SH_DEBUG" ] && set -x
+
+# guideline from rbenv about how to deal with .kube-context files
+# if [ -z "$KUBE_SH_CONTEXT" ]; then
+#     KUBE_SH_CONTEXT_FILE="$(kube-context-file)"
+#     KUBE_SH_CONTEXT="$(kube-context-file-read "$KUBE_SH_CONTEXT_FILE" || true)"
+# fi
+
+# guideline from rbenv about how to deal with "system" shell overrides, which says always use current context
+# regardless of what .kube-context files say
+# if [ -z "$KUBE_SH_CONTEXT" ] || [ "$KUBE_SH_CONTEXT" = "system" ]; then
+#     echo "system"
+#     exit
+# fi
+
+if [ -z "$KUBE_SH_CONTEXT" ]; then
+    KUBE_SH_CONTEXT=$(kubectl config current-context)
+fi
+
+context_exists() {
+    local context="$1"
+    [ -n "$(kubectl config get-contexts -o name | grep "^$context\$")" ]
+}
+
+if context_exists "$KUBE_SH_CONTEXT"; then
+    echo "$KUBE_SH_CONTEXT"
+else
+    echo "kube: context \`$KUBE_SH_CONTEXT' is no longer in $(kube-config-file)" >&2
+    exit 1
+fi

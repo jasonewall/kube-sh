@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Summary: Show the currently active kubectl context and its origin
+#
+# Shows the currently selected kubectl context and how it was
+# selected. To obtain only the name of the context use `kube context-name'.
+
+set -e
+
+echo "$(kube-context-name) (set by $(kube-context-origin))"

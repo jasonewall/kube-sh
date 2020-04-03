@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Summary: Explain how the current kubectl context is set
+set -e
+
+if [ -n "$KUBE_SH_CONTEXT" ]; then
+    echo "KUBE_SH_CONTEXT environment variable"
+else
+    kube-context-file
+fi
