@@ -1,5 +1,21 @@
 #!/usr/bin/env bash
+# Usage: kube config-file
 # Summary: Detect where the current kube config file is
+# Help: As of this writing the current kubectl load order for config priority is:
+# (from `kubectl help config')
+#   1.  If the --kubeconfig flag is set, then only that file is loaded. The flag may only be set once and no merging takes
+# place.
+#   2.  If $KUBECONFIG environment variable is set, then it is used as a list of paths (normal path delimiting rules for
+# your system). These paths are merged. When a value is modified, it is modified in the file that defines the stanza. When
+# a value is created, it is created in the first file that exists. If no files in the chain exist, then it creates the
+# last file in the list.
+#   3.  Otherwise, ${HOME}/.kube/config is used and no merging takes place.
 set -e
 
-echo "~/.kube/config"
+# TODO: #
+# For clarity this command tries to mimic this load order so you know
+# exactly where your context is being pulled from.
+
+
+
+echo "${HOME}/.kube/config"
